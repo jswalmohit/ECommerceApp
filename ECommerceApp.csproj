@@ -21,11 +21,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="EComm.Commons\EComm.Commons.csproj" />
-    <ProjectReference Include="EComm.Data\EComm.Data.csproj" />
-    <ProjectReference Include="EComm.Repositories\EComm.Repositories.csproj" />
-    <ProjectReference Include="EComm.Services\EComm.Services.csproj" />
-  </ItemGroup>
-
 </Project>
