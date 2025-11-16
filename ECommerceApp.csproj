@@ -10,19 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="NewFolder\**" />
+    <Content Remove="NewFolder\**" />
+    <EmbeddedResource Remove="NewFolder\**" />
+    <None Remove="NewFolder\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="NewFolder\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\EComm.Commons\EComm.Commons.csproj" />
-    <ProjectReference Include="..\EComm.Data\EComm.Data.csproj" />
-    <ProjectReference Include="..\EComm.Repositories\EComm.Repositories.csproj" />
-    <ProjectReference Include="..\EComm.Services\EComm.Services.csproj" />
   </ItemGroup>
 
 </Project>
