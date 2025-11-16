@@ -11,4 +11,9 @@
     <ProjectReference Include="..\EComm.Repositories\EComm.Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Implementation\" />
+    <Folder Include="Interface\" />
+  </ItemGroup>
+
 </Project>

@@ -11,4 +11,9 @@
     <ProjectReference Include="..\EComm.Data\EComm.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Interface\" />
+    <Folder Include="Implementation\" />
+  </ItemGroup>
+
 </Project>
