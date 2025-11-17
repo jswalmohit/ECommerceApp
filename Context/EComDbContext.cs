@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ECommerceApp.EComm.Commons.Modals;
+using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Context
 {
@@ -8,5 +9,6 @@ namespace ECommerceApp.Context
         {
             
         }
+        public DbSet<UserRequest> Users { get; set; }
     }
 }
