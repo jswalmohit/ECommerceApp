@@ -15,7 +15,7 @@ namespace ECommerceApp.Controllers
             _authService = authService;
         }
 
-        [HttpPost("GenerateJwtToken")]
+        [HttpPost("token")]
         public async Task<IActionResult> GenerateJwtToken([FromBody] LoginRequest loginRequest)
         {
             if (!ModelState.IsValid)
