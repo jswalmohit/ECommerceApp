@@ -11,6 +11,7 @@ namespace ECommerceApp.Context
 
         public DbSet<UserEntity> Users => Set<UserEntity>();
         public DbSet<UserCredentialEntity> Credentials => Set<UserCredentialEntity>();
+        public DbSet<ProductEntity> Products => Set<ProductEntity>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

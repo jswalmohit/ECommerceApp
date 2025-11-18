@@ -18,7 +18,8 @@ namespace ECommerceApp.Extension
             services.AddScoped<IRegisterRepo, RegisterRepo>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAuthRepo, AuthRepo>();
-
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductRepo, ProductRepo>();
         }
         public static void AddJwtAuthentication(this IServiceCollection services, WebApplicationBuilder builder)
         {
