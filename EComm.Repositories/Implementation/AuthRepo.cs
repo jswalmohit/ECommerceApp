@@ -1,4 +1,5 @@
 using ECommerceApp.Context;
+using ECommerceApp.EComm.Commons.Utilities;
 using ECommerceApp.EComm.Data.Entities;
 using ECommerceApp.EComm.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +20,9 @@ namespace ECommerceApp.EComm.Repositories.Implementation
             if (user == null || user.Credentials == null)
                 return null;
 
-            // Simple password comparison (in production, use hashed passwords)
-            if (user.Credentials.Password != password)
-                return null;
+            bool isPasswordValid = PasswordHelper.VerifyPassword(password, user.Credentials.Password);
 
-            return user;
+            return isPasswordValid ? user : null;
         }
     }
 }

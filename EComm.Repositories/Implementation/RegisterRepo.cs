@@ -1,5 +1,6 @@
 ﻿using ECommerceApp.Context;
 using ECommerceApp.EComm.Commons.Modals;
+using ECommerceApp.EComm.Commons.Utilities;
 using ECommerceApp.EComm.Data.Entities;
 using ECommerceApp.EComm.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
@@ -86,7 +87,7 @@ namespace ECommerceApp.EComm.Repositories.Implementation
                 FullName = user.FullName,
                 Credentials = new UserCredentialEntity
                 {
-                    Password = user.Credentials?.Password ?? string.Empty
+                    Password = PasswordHelper.HashPassword(user.Credentials.Password)
                 }
             };
         }
