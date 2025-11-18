@@ -4,6 +4,7 @@ using ECommerceApp.EComm.Repositories.Interface;
 using ECommerceApp.EComm.Services.Implementation;
 using ECommerceApp.EComm.Services.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -49,15 +50,18 @@ namespace ECommerceApp.Extension
 
             builder.Services.AddAuthorization();
         }      
-        public static void AddCorsConfig(this IServiceCollection services)
+        public static void AddCorsConfig(this IServiceCollection services, IConfiguration configuration)
         {
+            var allowedOrigins = configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.AllowAnyOrigin()
+                    builder.WithOrigins(allowedOrigins)
                            .AllowAnyMethod()
-                           .AllowAnyHeader();
+                           .AllowAnyHeader()
+                           .AllowCredentials();
                 });
             });
         }

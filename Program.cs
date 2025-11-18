@@ -36,7 +36,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddServices();
 builder.Services.AddJwtAuthentication(builder);
-builder.Services.AddCorsConfig();
+builder.Services.AddCorsConfig(builder.Configuration);
 builder.Services.AddDbContext<EComDbContext>(options =>
 {
     var conn = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -53,6 +53,9 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 //}
+
+// Add CORS middleware (must be before UseAuthentication and UseAuthorization)
+app.UseCors();
 
 // Add global exception handler middleware (should be early in the pipeline)
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
