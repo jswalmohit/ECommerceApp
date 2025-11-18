@@ -1,7 +1,6 @@
 using ECommerceApp.EComm.Commons.Modals;
 using ECommerceApp.EComm.Repositories.Interface;
 using ECommerceApp.EComm.Services.Interface;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -9,16 +8,10 @@ using System.Text;
 
 namespace ECommerceApp.EComm.Services.Implementation
 {
-    public class AuthService : IAuthService
+    public class AuthService(IAuthRepo authRepo, IConfiguration configuration) : IAuthService
     {
-        private readonly IAuthRepo _authRepo;
-        private readonly IConfiguration _configuration;
-
-        public AuthService(IAuthRepo authRepo, IConfiguration configuration)
-        {
-            _authRepo = authRepo;
-            _configuration = configuration;
-        }
+        private readonly IAuthRepo _authRepo = authRepo;
+        private readonly IConfiguration _configuration = configuration;
 
         public async Task<AuthResponse?> GenerateJwtTokenAsync(LoginRequest loginRequest)
         {

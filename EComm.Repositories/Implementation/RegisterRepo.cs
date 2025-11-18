@@ -6,14 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.EComm.Repositories.Implementation
 {
-    public class RegisterRepo : IRegisterRepo
+    public class RegisterRepo(EComDbContext context) : IRegisterRepo
     {
-        private readonly EComDbContext _context;
-
-        public RegisterRepo(EComDbContext context)
-        {
-            _context = context;
-        }
+        private readonly EComDbContext _context = context;
 
         public async Task<UserRequest?> GetByIdAsync(int id)
         {
@@ -27,6 +22,12 @@ namespace ECommerceApp.EComm.Repositories.Implementation
 
         public async Task<UserRequest> CreateAsync(UserRequest user)
         {
+            var isUserExists = await _context.Users
+                .AsNoTracking()
+                .AnyAsync(u => u.LoginId == user.LoginId);
+            if (isUserExists)
+                throw new InvalidOperationException("User with the same LoginId already exists.");
+
             var entity = ToEntity(user);
 
             _context.Users.Add(entity);

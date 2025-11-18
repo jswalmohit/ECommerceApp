@@ -5,14 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.EComm.Repositories.Implementation
 {
-    public class AuthRepo : IAuthRepo
+    public class AuthRepo(EComDbContext context) : IAuthRepo
     {
-        private readonly EComDbContext _context;
-
-        public AuthRepo(EComDbContext context)
-        {
-            _context = context;
-        }
+        private readonly EComDbContext _context = context;
 
         public async Task<UserEntity?> ValidateUserAsync(string loginId, string password)
         {
