@@ -21,6 +21,8 @@ namespace ECommerceApp.Extension
             services.AddScoped<IAuthRepo, AuthRepo>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepo, ProductRepo>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartRepo, CartRepo>();
         }
         public static void AddJwtAuthentication(this IServiceCollection services, WebApplicationBuilder builder)
         {
@@ -58,7 +60,7 @@ namespace ECommerceApp.Extension
             {
                 options.AddDefaultPolicy(builder =>
                 {
-                    builder.WithOrigins(allowedOrigins)
+                    builder.WithOrigins(allowedOrigins!)
                            .AllowAnyMethod()
                            .AllowAnyHeader()
                            .AllowCredentials();
