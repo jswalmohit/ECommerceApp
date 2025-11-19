@@ -7,7 +7,7 @@ namespace ECommerceApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class RegistrationController(IRegisterService registerService) : ControllerBase
+    public class RegisterController(IRegisterService registerService) : ControllerBase
     {
         private readonly IRegisterService _registerService = registerService;
 

@@ -59,6 +59,7 @@ app.UseCors();
 
 // Add global exception handler middleware (should be early in the pipeline)
 app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+app.UseMiddleware<HeaderValidationMiddleware>();
 
 app.UseHttpsRedirection();
 
