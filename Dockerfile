@@ -16,6 +16,7 @@ COPY ["src/EComm.Data/EComm.Data.csproj", "src/EComm.Data/"]
 COPY ["src/EComm.Repositories/EComm.Repositories.csproj", "src/EComm.Repositories/"]
 COPY ["src/EComm.Services/EComm.Services.csproj", "src/EComm.Services/"]
 COPY ["src/EComm.Logging/EComm.Logging.csproj", "src/EComm.Logging/"]
+COPY ["ECommerceApp.Tests/ECommerceApp.Tests.csproj", "ECommerceApp.Tests/"]
 RUN dotnet restore "ECommerceApp.sln"
 COPY . .
 WORKDIR "/src/src/ECommerceApp"
