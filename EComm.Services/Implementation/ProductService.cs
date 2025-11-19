@@ -1,4 +1,5 @@
 using ECommerceApp.EComm.Commons.Modals;
+using ECommerceApp.EComm.Commons.Results;
 using ECommerceApp.EComm.Repositories.Interface;
 using ECommerceApp.EComm.Services.Interface;
 
@@ -13,14 +14,34 @@ namespace ECommerceApp.EComm.Services.Implementation
             _productRepository = productRepository;
         }
 
-        public async Task<List<ProductResponse>> GetAllProductsAsync()
+        public async Task<ServiceResult<List<ProductResponse>>> GetAllProductsAsync()
         {
-            return await _productRepository.GetAllAsync();
+            try
+            {
+                var products = await _productRepository.GetAllAsync();
+                return ServiceResult<List<ProductResponse>>.Success(products);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<List<ProductResponse>>.Failure($"Error retrieving products: {ex.Message}");
+            }
         }
 
-        public async Task<ProductResponse?> GetProductByIdAsync(int id)
+        public async Task<ServiceResult<ProductResponse>> GetProductByIdAsync(int id)
         {
-            return await _productRepository.GetByIdAsync(id);
+            try
+            {
+                var product = await _productRepository.GetByIdAsync(id);
+                if (product == null)
+                {
+                    return ServiceResult<ProductResponse>.Failure("Product not found", 404);
+                }
+                return ServiceResult<ProductResponse>.Success(product);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<ProductResponse>.Failure($"Error retrieving product: {ex.Message}");
+            }
         }
     }
 }

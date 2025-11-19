@@ -1,31 +1,19 @@
 using ECommerceApp.EComm.Commons.Modals;
 using ECommerceApp.EComm.Services.Interface;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace ECommerceApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
-    public class CartController : ControllerBase
+    [Microsoft.AspNetCore.Authorization.Authorize]
+    public class CartController : BaseController
     {
         private readonly ICartService _cartService;
 
         public CartController(ICartService cartService)
         {
             _cartService = cartService;
-        }
-
-        private int GetUserId()
-        {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
-            {
-                throw new UnauthorizedAccessException("Invalid user ID in token");
-            }
-            return userId;
         }
 
         [HttpPost("add")]
@@ -36,11 +24,7 @@ namespace ECommerceApp.Controllers
 
             var userId = GetUserId();
             var result = await _cartService.AddItemAsync(userId, request);
-
-            if (result == null)
-                return BadRequest("Product not found or inactive");
-
-            return Ok(result);
+            return HandleResult(result);
         }
 
         [HttpPost("add-multiple")]
@@ -55,9 +39,9 @@ namespace ECommerceApp.Controllers
             foreach (var request in requests)
             {
                 var result = await _cartService.AddItemAsync(userId, request);
-                if (result != null)
+                if (result.IsSuccess && result.Data != null)
                 {
-                    results.Add(result);
+                    results.Add(result.Data);
                 }
             }
 
@@ -69,11 +53,7 @@ namespace ECommerceApp.Controllers
         {
             var userId = GetUserId();
             var result = await _cartService.RemoveItemAsync(userId, cartItemId);
-
-            if (!result)
-                return NotFound("Cart item not found");
-
-            return Ok(new { message = "Item removed successfully" });
+            return HandleResult(result);
         }
 
         [HttpPost("remove-multiple")]
@@ -84,19 +64,15 @@ namespace ECommerceApp.Controllers
 
             var userId = GetUserId();
             var result = await _cartService.RemoveItemsAsync(userId, cartItemIds);
-
-            if (!result)
-                return NotFound("No cart items found to remove");
-
-            return Ok(new { message = "Items removed successfully" });
+            return HandleResult(result);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetCart()
         {
             var userId = GetUserId();
-            var cart = await _cartService.GetCartByUserIdAsync(userId);
-            return Ok(cart);
+            var result = await _cartService.GetCartByUserIdAsync(userId);
+            return HandleResult(result);
         }
     }
 }

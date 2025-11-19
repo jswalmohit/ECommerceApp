@@ -1,4 +1,5 @@
 using ECommerceApp.Context;
+using ECommerceApp.EComm.Commons.Mappings;
 using ECommerceApp.EComm.Commons.Modals;
 using ECommerceApp.EComm.Data.Entities;
 using ECommerceApp.EComm.Repositories.Interface;
@@ -6,9 +7,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.EComm.Repositories.Implementation
 {
-    public class ProductRepo(EComDbContext context) : IProductRepo
+    public class ProductRepo : Repository<ProductEntity>, IProductRepo
     {
-        private readonly EComDbContext _context = context;
+        private readonly EComDbContext _context;
+
+        public ProductRepo(EComDbContext context) : base(context)
+        {
+            _context = context;
+        }
 
         public async Task<List<ProductResponse>> GetAllAsync()
         {
@@ -18,7 +24,7 @@ namespace ECommerceApp.EComm.Repositories.Implementation
                 .OrderBy(p => p.Name)
                 .ToListAsync();
 
-            return entities.Select(ToDto).ToList();
+            return entities.ToDtoList();
         }
 
         public async Task<ProductResponse?> GetByIdAsync(int id)
@@ -27,24 +33,7 @@ namespace ECommerceApp.EComm.Repositories.Implementation
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == id);
 
-            return entity == null ? null : ToDto(entity);
-        }
-
-        private static ProductResponse ToDto(ProductEntity entity)
-        {
-            return new ProductResponse
-            {
-                Id = entity.Id,
-                Name = entity.Name,
-                Description = entity.Description,
-                Price = entity.Price,
-                Category = entity.Category,
-                ImageUrl = entity.ImageUrl,
-                StockQuantity = entity.StockQuantity,
-                IsActive = entity.IsActive,
-                CreatedDate = entity.CreatedDate,
-                UpdatedDate = entity.UpdatedDate
-            };
+            return entity?.ToDto();
         }
     }
 }

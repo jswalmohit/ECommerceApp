@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace ECommerceApp.EComm.Data.Entities
 {
     [Table("Products")]
-    public class ProductEntity
+    public class ProductEntity : BaseEntity
     {
-        [Key]
-        public int Id { get; set; }
 
         [Required, MaxLength(200)]
         public string Name { get; set; } = string.Empty;
@@ -28,10 +26,6 @@ namespace ECommerceApp.EComm.Data.Entities
         public int StockQuantity { get; set; } = 0;
 
         public bool IsActive { get; set; } = true;
-
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-
-        public DateTime? UpdatedDate { get; set; }
     }
 }
 

@@ -1,29 +1,34 @@
 using ECommerceApp.EComm.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerceApp.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController(IProductService productService) : ControllerBase
+    public class ProductsController : BaseController
     {
-        private readonly IProductService _productService = productService;
+        private readonly IProductService _productService;
+
+        public ProductsController(IProductService productService)
+        {
+            _productService = productService;
+        }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllProducts()
         {
-            var products = await _productService.GetAllProductsAsync();
-            return Ok(products);
+            var result = await _productService.GetAllProductsAsync();
+            return HandleResult(result);
         }
 
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetProductById(int id)
         {
-            var product = await _productService.GetProductByIdAsync(id);
-            if (product == null)
-                return NotFound($"Product with ID {id} not found.");
-
-            return Ok(product);
+            var result = await _productService.GetProductByIdAsync(id);
+            return HandleResult(result);
         }
     }
 }

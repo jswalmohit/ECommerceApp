@@ -1,4 +1,5 @@
 using ECommerceApp.Context;
+using ECommerceApp.EComm.Commons.Mappings;
 using ECommerceApp.EComm.Commons.Modals;
 using ECommerceApp.EComm.Data.Entities;
 using ECommerceApp.EComm.Repositories.Interface;
@@ -51,7 +52,12 @@ namespace ECommerceApp.EComm.Repositories.Implementation
             await _context.SaveChangesAsync();
 
             // Return the cart item with product details
-            return await GetCartItemByIdAsync(existingCartItem.Id, userId);
+            var updatedItem = await _context.CartItems
+                .Include(c => c.Product)
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == existingCartItem.Id && c.UserId == userId);
+
+            return updatedItem?.ToDto();
         }
 
         public async Task<bool> RemoveItemAsync(int userId, int cartItemId)
@@ -89,7 +95,7 @@ namespace ECommerceApp.EComm.Repositories.Implementation
                 .AsNoTracking()
                 .ToListAsync();
 
-            var items = cartItems.Select(ToDto).ToList();
+            var items = cartItems.ToDtoList();
             var totalAmount = items.Sum(i => i.SubTotal);
             var totalItems = items.Sum(i => i.Quantity);
 
@@ -109,25 +115,9 @@ namespace ECommerceApp.EComm.Repositories.Implementation
                 .AsNoTracking()
                 .FirstOrDefaultAsync(c => c.Id == cartItemId && c.UserId == userId);
 
-            return cartItem == null ? null : ToDto(cartItem);
+            return cartItem?.ToDto();
         }
 
-        private static CartItemResponse ToDto(CartItemEntity entity)
-        {
-            return new CartItemResponse
-            {
-                Id = entity.Id,
-                UserId = entity.UserId,
-                ProductId = entity.ProductId,
-                ProductName = entity.Product?.Name ?? string.Empty,
-                ProductPrice = entity.Product?.Price ?? 0,
-                ProductImageUrl = entity.Product?.ImageUrl ?? string.Empty,
-                Quantity = entity.Quantity,
-                SubTotal = (entity.Product?.Price ?? 0) * entity.Quantity,
-                CreatedDate = entity.CreatedDate,
-                UpdatedDate = entity.UpdatedDate
-            };
-        }
     }
 }
 

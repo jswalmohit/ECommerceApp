@@ -1,4 +1,5 @@
 using ECommerceApp.EComm.Commons.Modals;
+using ECommerceApp.EComm.Commons.Results;
 using ECommerceApp.EComm.Repositories.Interface;
 using ECommerceApp.EComm.Services.Interface;
 
@@ -13,24 +14,68 @@ namespace ECommerceApp.EComm.Services.Implementation
             _cartRepository = cartRepository;
         }
 
-        public async Task<CartItemResponse?> AddItemAsync(int userId, CartItemRequest request)
+        public async Task<ServiceResult<CartItemResponse>> AddItemAsync(int userId, CartItemRequest request)
         {
-            return await _cartRepository.AddItemAsync(userId, request.ProductId, request.Quantity);
+            try
+            {
+                var result = await _cartRepository.AddItemAsync(userId, request.ProductId, request.Quantity);
+                if (result == null)
+                {
+                    return ServiceResult<CartItemResponse>.Failure("Product not found or inactive", 404);
+                }
+                return ServiceResult<CartItemResponse>.Success(result);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<CartItemResponse>.Failure($"Error adding item to cart: {ex.Message}");
+            }
         }
 
-        public async Task<bool> RemoveItemAsync(int userId, int cartItemId)
+        public async Task<ServiceResult> RemoveItemAsync(int userId, int cartItemId)
         {
-            return await _cartRepository.RemoveItemAsync(userId, cartItemId);
+            try
+            {
+                var result = await _cartRepository.RemoveItemAsync(userId, cartItemId);
+                if (!result)
+                {
+                    return ServiceResult.Failure("Cart item not found", 404);
+                }
+                return ServiceResult.Success();
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult.Failure($"Error removing item from cart: {ex.Message}");
+            }
         }
 
-        public async Task<bool> RemoveItemsAsync(int userId, List<int> cartItemIds)
+        public async Task<ServiceResult> RemoveItemsAsync(int userId, List<int> cartItemIds)
         {
-            return await _cartRepository.RemoveItemsAsync(userId, cartItemIds);
+            try
+            {
+                var result = await _cartRepository.RemoveItemsAsync(userId, cartItemIds);
+                if (!result)
+                {
+                    return ServiceResult.Failure("No cart items found to remove", 404);
+                }
+                return ServiceResult.Success();
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult.Failure($"Error removing items from cart: {ex.Message}");
+            }
         }
 
-        public async Task<CartResponse> GetCartByUserIdAsync(int userId)
+        public async Task<ServiceResult<CartResponse>> GetCartByUserIdAsync(int userId)
         {
-            return await _cartRepository.GetCartByUserIdAsync(userId);
+            try
+            {
+                var cart = await _cartRepository.GetCartByUserIdAsync(userId);
+                return ServiceResult<CartResponse>.Success(cart);
+            }
+            catch (Exception ex)
+            {
+                return ServiceResult<CartResponse>.Failure($"Error retrieving cart: {ex.Message}");
+            }
         }
     }
 }

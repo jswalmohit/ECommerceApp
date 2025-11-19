@@ -15,6 +15,7 @@ namespace ECommerceApp.Extension
         public static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<EComDbContext>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IRegisterService, RegisterService>();
             services.AddScoped<IRegisterRepo, RegisterRepo>();
             services.AddScoped<IAuthService, AuthService>();

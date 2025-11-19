@@ -1,11 +1,12 @@
 using ECommerceApp.EComm.Commons.Modals;
+using ECommerceApp.EComm.Commons.Results;
 
 namespace ECommerceApp.EComm.Services.Interface
 {
     public interface IProductService
     {
-        Task<List<ProductResponse>> GetAllProductsAsync();
-        Task<ProductResponse?> GetProductByIdAsync(int id);
+        Task<ServiceResult<List<ProductResponse>>> GetAllProductsAsync();
+        Task<ServiceResult<ProductResponse>> GetProductByIdAsync(int id);
     }
 }
 
