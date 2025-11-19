@@ -45,8 +45,7 @@ namespace ECommerceApp.Tests.Helpers
                 UserId = userId,
                 ProductId = productId,
                 Quantity = quantity,
-                CreatedDate = DateTime.UtcNow,
-                Product = CreateProductEntity(productId)
+                CreatedDate = DateTime.UtcNow
             };
         }
 

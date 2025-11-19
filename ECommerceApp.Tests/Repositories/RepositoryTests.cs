@@ -1,4 +1,4 @@
-using ECommerceApp.Context;
+using ECommerceApp.EComm.Data.Context;
 using ECommerceApp.EComm.Data.Entities;
 using ECommerceApp.EComm.Repositories.Implementation;
 using ECommerceApp.Tests.Helpers;

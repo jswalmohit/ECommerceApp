@@ -26,7 +26,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ECommerceApp.csproj" />
+    <ProjectReference Include="..\src\ECommerceApp\ECommerceApp.csproj" />
+    <ProjectReference Include="..\src\EComm.Services\EComm.Services.csproj" />
+    <ProjectReference Include="..\src\EComm.Repositories\EComm.Repositories.csproj" />
+    <ProjectReference Include="..\src\EComm.Data\EComm.Data.csproj" />
+    <ProjectReference Include="..\src\EComm.Commons\EComm.Commons.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,4 +1,4 @@
-using ECommerceApp.Context;
+using ECommerceApp.EComm.Data.Context;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.Tests.Helpers
