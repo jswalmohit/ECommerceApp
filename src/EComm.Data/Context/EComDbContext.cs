@@ -3,12 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceApp.EComm.Data.Context
 {
-    public class EComDbContext : DbContext
+    public class EComDbContext(DbContextOptions<EComDbContext> options) : DbContext(options)
     {
-        public EComDbContext(DbContextOptions<EComDbContext> options) : base(options)
-        {
-        }
-
         public DbSet<UserEntity> Users => Set<UserEntity>();
         public DbSet<UserCredentialEntity> Credentials => Set<UserCredentialEntity>();
         public DbSet<ProductEntity> Products => Set<ProductEntity>();
