@@ -21,7 +21,7 @@ namespace ECommerceApp.EComm.Repositories.Implementation
             var entities = await _context.Products
                 .Where(p => p.IsActive)
                 .AsNoTracking()
-                .OrderBy(p => p.Name)
+                .OrderBy(p => p.ProductId)
                 .ToListAsync();
 
             return entities.ToDtoList();

@@ -11,6 +11,7 @@ public static class MappingExtensions
         return new ProductResponse
         {
             Id = entity.Id,
+            ProductId = entity.ProductId,
             Name = entity.Name,
             Description = entity.Description,
             Price = entity.Price,
