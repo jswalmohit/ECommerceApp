@@ -16,16 +16,36 @@ namespace ECommerceApp.EComm.Repositories.Implementation
             _dbSet = context.Set<T>();
         }
 
-        public virtual async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<T?> GetByIdAsync(object id)
         {
-            return await _dbSet.FindAsync(id);
+            var keyValues = id is object[] arr ? arr : new object[] { id };
+            return await _dbSet.FindAsync(keyValues);
         }
 
-        public virtual async Task<T?> GetByIdAsync(int id, params Expression<Func<T, object>>[] includes)
+        public virtual async Task<T?> GetByIdAsync(object id, params Expression<Func<T, object>>[] includes)
         {
-            IQueryable<T> query = _dbSet;
+            IQueryable<T> query = _dbSet.AsNoTracking();
             query = includes.Aggregate(query, (current, include) => current.Include(include));
-            return await query.FirstOrDefaultAsync(GetIdPredicate(id));
+
+            // Resolve primary key property via EF metadata
+            var entityType = _context.Model.FindEntityType(typeof(T));
+            var pk = entityType?.FindPrimaryKey();
+            if (pk == null || pk.Properties.Count != 1)
+            {
+                throw new InvalidOperationException("GetByIdAsync with includes only supports single-column primary keys.");
+            }
+
+            var pkProperty = pk.Properties[0];
+            var pkName = pkProperty.Name;
+
+            // Build predicate dynamically: x => x.[pkName] == id
+            var parameter = Expression.Parameter(typeof(T), "x");
+            var property = Expression.Property(parameter, pkName);
+            var constant = Expression.Constant(Convert.ChangeType(id, pkProperty.ClrType));
+            var equality = Expression.Equal(property, constant);
+            var lambda = Expression.Lambda<Func<T, bool>>(equality, parameter);
+
+            return await query.FirstOrDefaultAsync(lambda);
         }
 
         public virtual async Task<IEnumerable<T>> GetAllAsync()

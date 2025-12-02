@@ -5,11 +5,11 @@ namespace ECommerceApp.Tests.Helpers
 {
     public static class TestDataBuilder
     {
-        public static ProductEntity CreateProductEntity(int id = 1, string name = "Test Product", decimal price = 99.99m)
+        public static ProductEntity CreateProductEntity(string productId = "1", string name = "Test Product", decimal price = 99.99m)
         {
             return new ProductEntity
             {
-                Id = id,
+                ProductId = productId,
                 Name = name,
                 Description = "Test Description",
                 Price = price,
@@ -21,11 +21,11 @@ namespace ECommerceApp.Tests.Helpers
             };
         }
 
-        public static ProductResponse CreateProductResponse(int id = 1, string name = "Test Product", decimal price = 99.99m)
+        public static ProductResponse CreateProductResponse(string productId = "1", string name = "Test Product", decimal price = 99.99m)
         {
             return new ProductResponse
             {
-                Id = id,
+                ProductId = productId,
                 Name = name,
                 Description = "Test Description",
                 Price = price,
@@ -37,7 +37,7 @@ namespace ECommerceApp.Tests.Helpers
             };
         }
 
-        public static CartItemEntity CreateCartItemEntity(int id = 1, int userId = 1, int productId = 1, int quantity = 2)
+        public static CartItemEntity CreateCartItemEntity(int id = 1, int userId = 1, string productId = "1", int quantity = 2)
         {
             return new CartItemEntity
             {
@@ -49,7 +49,7 @@ namespace ECommerceApp.Tests.Helpers
             };
         }
 
-        public static CartItemRequest CreateCartItemRequest(int productId = 1, int quantity = 2)
+        public static CartItemRequest CreateCartItemRequest(string productId = "1", int quantity = 2)
         {
             return new CartItemRequest
             {
@@ -58,7 +58,7 @@ namespace ECommerceApp.Tests.Helpers
             };
         }
 
-        public static CartItemResponse CreateCartItemResponse(int id = 1, int userId = 1, int productId = 1, int quantity = 2)
+        public static CartItemResponse CreateCartItemResponse(int id = 1, int userId = 1, string productId = "1", int quantity = 2)
         {
             return new CartItemResponse
             {
@@ -79,7 +79,7 @@ namespace ECommerceApp.Tests.Helpers
             var items = new List<CartItemResponse>();
             for (int i = 1; i <= itemCount; i++)
             {
-                items.Add(CreateCartItemResponse(i, userId, i, 2));
+                items.Add(CreateCartItemResponse(i, userId, i.ToString(), 2));
             }
 
             return new CartResponse

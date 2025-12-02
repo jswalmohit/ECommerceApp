@@ -25,8 +25,8 @@ namespace ECommerceApp.Tests.Services
         {
             // Arrange
             var userId = 1;
-            var request = TestDataBuilder.CreateCartItemRequest(1, 2);
-            var cartItemResponse = TestDataBuilder.CreateCartItemResponse(1, userId, 1, 2);
+            var request = TestDataBuilder.CreateCartItemRequest("1", 2);
+            var cartItemResponse = TestDataBuilder.CreateCartItemResponse(1, userId, "1", 2);
 
             _mockCartRepo.Setup(repo => repo.AddItemAsync(userId, request.ProductId, request.Quantity))
                 .ReturnsAsync(cartItemResponse);
@@ -47,7 +47,7 @@ namespace ECommerceApp.Tests.Services
         {
             // Arrange
             var userId = 1;
-            var request = TestDataBuilder.CreateCartItemRequest(999, 2);
+            var request = TestDataBuilder.CreateCartItemRequest("999", 2);
 
             _mockCartRepo.Setup(repo => repo.AddItemAsync(userId, request.ProductId, request.Quantity))
                 .ReturnsAsync((CartItemResponse?)null);
@@ -67,7 +67,7 @@ namespace ECommerceApp.Tests.Services
         {
             // Arrange
             var userId = 1;
-            var request = TestDataBuilder.CreateCartItemRequest(1, 2);
+            var request = TestDataBuilder.CreateCartItemRequest("1", 2);
 
             _mockCartRepo.Setup(repo => repo.AddItemAsync(userId, request.ProductId, request.Quantity))
                 .ThrowsAsync(new Exception("Database error"));

@@ -23,14 +23,14 @@ namespace ECommerceApp.Tests.Repositories
         public async Task AddAsync_ShouldAddEntity()
         {
             // Arrange
-            var product = TestDataBuilder.CreateProductEntity(1);
+            var product = TestDataBuilder.CreateProductEntity("1");
 
             // Act
             await _repository.AddAsync(product);
             await _repository.SaveChangesAsync();
 
             // Assert
-            var result = await _context.Products.FindAsync(1);
+            var result = await _context.Products.FindAsync("1");
             result.Should().NotBeNull();
             result!.Name.Should().Be("Test Product");
         }
@@ -39,23 +39,23 @@ namespace ECommerceApp.Tests.Repositories
         public async Task GetByIdAsync_ShouldReturnEntity_WhenExists()
         {
             // Arrange
-            var product = TestDataBuilder.CreateProductEntity(1);
+            var product = TestDataBuilder.CreateProductEntity("1");
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _repository.GetByIdAsync(1);
+            var result = await _repository.GetByIdAsync("1");
 
             // Assert
             result.Should().NotBeNull();
-            result!.Id.Should().Be(1);
+            result!.ProductId.Should().Be("1");
         }
 
         [Fact]
         public async Task GetByIdAsync_ShouldReturnNull_WhenNotExists()
         {
             // Act
-            var result = await _repository.GetByIdAsync(999);
+            var result = await _repository.GetByIdAsync("999");
 
             // Assert
             result.Should().BeNull();
@@ -67,9 +67,9 @@ namespace ECommerceApp.Tests.Repositories
             // Arrange
             var products = new List<ProductEntity>
             {
-                TestDataBuilder.CreateProductEntity(1),
-                TestDataBuilder.CreateProductEntity(2),
-                TestDataBuilder.CreateProductEntity(3)
+                TestDataBuilder.CreateProductEntity("1"),
+                TestDataBuilder.CreateProductEntity("2"),
+                TestDataBuilder.CreateProductEntity("3")
             };
             _context.Products.AddRange(products);
             await _context.SaveChangesAsync();
@@ -85,8 +85,8 @@ namespace ECommerceApp.Tests.Repositories
         public async Task FindAsync_ShouldReturnMatchingEntities()
         {
             // Arrange
-            var product1 = TestDataBuilder.CreateProductEntity(1, "Product A", 99.99m);
-            var product2 = TestDataBuilder.CreateProductEntity(2, "Product B", 149.99m);
+            var product1 = TestDataBuilder.CreateProductEntity("1", "Product A", 99.99m);
+            var product2 = TestDataBuilder.CreateProductEntity("2", "Product B", 149.99m);
             _context.Products.AddRange(product1, product2);
             await _context.SaveChangesAsync();
 
@@ -102,7 +102,7 @@ namespace ECommerceApp.Tests.Repositories
         public async Task UpdateAsync_ShouldUpdateEntity()
         {
             // Arrange
-            var product = TestDataBuilder.CreateProductEntity(1);
+            var product = TestDataBuilder.CreateProductEntity("1");
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
@@ -114,7 +114,7 @@ namespace ECommerceApp.Tests.Repositories
             await _repository.SaveChangesAsync();
 
             // Assert
-            var updated = await _context.Products.FindAsync(1);
+            var updated = await _context.Products.FindAsync("1");
             updated!.Name.Should().Be("Updated Product");
             updated.Price.Should().Be(199.99m);
         }
@@ -123,7 +123,7 @@ namespace ECommerceApp.Tests.Repositories
         public async Task DeleteAsync_ShouldRemoveEntity()
         {
             // Arrange
-            var product = TestDataBuilder.CreateProductEntity(1);
+            var product = TestDataBuilder.CreateProductEntity("1");
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
@@ -132,7 +132,7 @@ namespace ECommerceApp.Tests.Repositories
             await _repository.SaveChangesAsync();
 
             // Assert
-            var deleted = await _context.Products.FindAsync(1);
+            var deleted = await _context.Products.FindAsync("1");
             deleted.Should().BeNull();
         }
 
@@ -142,8 +142,8 @@ namespace ECommerceApp.Tests.Repositories
             // Arrange
             var products = new List<ProductEntity>
             {
-                TestDataBuilder.CreateProductEntity(1),
-                TestDataBuilder.CreateProductEntity(2)
+                TestDataBuilder.CreateProductEntity("1"),
+                TestDataBuilder.CreateProductEntity("2")
             };
             _context.Products.AddRange(products);
             await _context.SaveChangesAsync();
@@ -159,8 +159,8 @@ namespace ECommerceApp.Tests.Repositories
         public async Task CountAsync_WithPredicate_ShouldReturnFilteredCount()
         {
             // Arrange
-            var product1 = TestDataBuilder.CreateProductEntity(1, "Product A", 99.99m);
-            var product2 = TestDataBuilder.CreateProductEntity(2, "Product B", 149.99m);
+            var product1 = TestDataBuilder.CreateProductEntity("1", "Product A", 99.99m);
+            var product2 = TestDataBuilder.CreateProductEntity("2", "Product B", 149.99m);
             _context.Products.AddRange(product1, product2);
             await _context.SaveChangesAsync();
 

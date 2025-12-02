@@ -24,21 +24,21 @@ namespace ECommerceApp.Tests.Repositories
         {
             // Arrange
             var userId = 1;
-            var product = TestDataBuilder.CreateProductEntity(1, "Test Product", 99.99m);
+            var product = TestDataBuilder.CreateProductEntity("1", "Test Product", 99.99m);
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _cartRepo.AddItemAsync(userId, 1, 2);
+            var result = await _cartRepo.AddItemAsync(userId, "1", 2);
 
             // Assert
             result.Should().NotBeNull();
             result!.UserId.Should().Be(userId);
-            result.ProductId.Should().Be(1);
+            result.ProductId.Should().Be("1");
             result.Quantity.Should().Be(2);
             result.ProductName.Should().Be("Test Product");
 
-            var cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == 1);
+            var cartItem = await _context.CartItems.FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == "1");
             cartItem.Should().NotBeNull();
             cartItem!.Quantity.Should().Be(2);
         }
@@ -48,15 +48,15 @@ namespace ECommerceApp.Tests.Repositories
         {
             // Arrange
             var userId = 1;
-            var product = TestDataBuilder.CreateProductEntity(1, "Test Product", 99.99m);
+            var product = TestDataBuilder.CreateProductEntity("1", "Test Product", 99.99m);
             _context.Products.Add(product);
 
-            var existingCartItem = TestDataBuilder.CreateCartItemEntity(1, userId, 1, 2);
+            var existingCartItem = TestDataBuilder.CreateCartItemEntity(1, userId, "1", 2);
             _context.CartItems.Add(existingCartItem);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _cartRepo.AddItemAsync(userId, 1, 3);
+            var result = await _cartRepo.AddItemAsync(userId, "1", 3);
 
             // Assert
             result.Should().NotBeNull();
@@ -74,7 +74,7 @@ namespace ECommerceApp.Tests.Repositories
             var userId = 1;
 
             // Act
-            var result = await _cartRepo.AddItemAsync(userId, 999, 2);
+            var result = await _cartRepo.AddItemAsync(userId, "999", 2);
 
             // Assert
             result.Should().BeNull();
@@ -85,13 +85,13 @@ namespace ECommerceApp.Tests.Repositories
         {
             // Arrange
             var userId = 1;
-            var product = TestDataBuilder.CreateProductEntity(1, "Test Product", 99.99m);
+            var product = TestDataBuilder.CreateProductEntity("1", "Test Product", 99.99m);
             product.IsActive = false;
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _cartRepo.AddItemAsync(userId, 1, 2);
+            var result = await _cartRepo.AddItemAsync(userId, "1", 2);
 
             // Assert
             result.Should().BeNull();
@@ -102,7 +102,7 @@ namespace ECommerceApp.Tests.Repositories
         {
             // Arrange
             var userId = 1;
-            var cartItem = TestDataBuilder.CreateCartItemEntity(1, userId, 1, 2);
+            var cartItem = TestDataBuilder.CreateCartItemEntity(1, userId, "1", 2);
             _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();
 
@@ -134,7 +134,7 @@ namespace ECommerceApp.Tests.Repositories
             // Arrange
             var userId1 = 1;
             var userId2 = 2;
-            var cartItem = TestDataBuilder.CreateCartItemEntity(1, userId1, 1, 2);
+            var cartItem = TestDataBuilder.CreateCartItemEntity(1, userId1, "1", 2);
             _context.CartItems.Add(cartItem);
             await _context.SaveChangesAsync();
 
@@ -152,13 +152,13 @@ namespace ECommerceApp.Tests.Repositories
         {
             // Arrange
             var userId = 1;
-            var product1 = TestDataBuilder.CreateProductEntity(1, "Product 1", 50.00m);
-            var product2 = TestDataBuilder.CreateProductEntity(2, "Product 2", 75.00m);
+            var product1 = TestDataBuilder.CreateProductEntity("1", "Product 1", 50.00m);
+            var product2 = TestDataBuilder.CreateProductEntity("2", "Product 2", 75.00m);
             _context.Products.AddRange(product1, product2);
 
-            var cartItem1 = TestDataBuilder.CreateCartItemEntity(1, userId, 1, 2);
+            var cartItem1 = TestDataBuilder.CreateCartItemEntity(1, userId, "1", 2);
             cartItem1.Product = product1;
-            var cartItem2 = TestDataBuilder.CreateCartItemEntity(2, userId, 2, 3);
+            var cartItem2 = TestDataBuilder.CreateCartItemEntity(2, userId, "2", 3);
             cartItem2.Product = product2;
             _context.CartItems.AddRange(cartItem1, cartItem2);
             await _context.SaveChangesAsync();

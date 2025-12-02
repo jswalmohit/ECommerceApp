@@ -7,7 +7,7 @@ namespace ECommerceApp.EComm.Data.Entities
     public class ProductEntity : BaseEntity
     {
 
-        [Required, MaxLength(10)]
+        [Key, MaxLength(10)]
         public string ProductId { get; set; } =string.Empty;
 
         [Required, MaxLength(200)]

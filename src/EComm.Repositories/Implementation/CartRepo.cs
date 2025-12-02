@@ -16,12 +16,12 @@ namespace ECommerceApp.EComm.Repositories.Implementation
             _context = context;
         }
 
-        public async Task<CartItemResponse?> AddItemAsync(int userId, int productId, int quantity)
+        public async Task<CartItemResponse?> AddItemAsync(int userId, string productId, int quantity)
         {
             // Check if product exists
             var product = await _context.Products
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == productId && p.IsActive);
+            .FirstOrDefaultAsync(p => p.ProductId == productId && p.IsActive);
 
             if (product == null)
                 return null;

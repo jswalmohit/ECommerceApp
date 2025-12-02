@@ -21,17 +21,17 @@ namespace ECommerceApp.EComm.Repositories.Implementation
             var entities = await _context.Products
                 .Where(p => p.IsActive)
                 .AsNoTracking()
-                .OrderBy(p => p.ProductId)
+                .OrderBy(p => p.Name)
                 .ToListAsync();
 
             return entities.ToDtoList();
         }
 
-        public async Task<ProductResponse?> GetByIdAsync(int id)
+        public async Task<ProductResponse?> GetByIdAsync(string productId)
         {
             var entity = await _context.Products
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.ProductId == productId);
 
             return entity?.ToDto();
         }

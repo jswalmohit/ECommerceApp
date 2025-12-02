@@ -29,8 +29,8 @@ namespace ECommerceApp.Tests.Controllers
             // Arrange
             var products = new List<ProductResponse>
             {
-                TestDataBuilder.CreateProductResponse(1, "Product 1", 99.99m),
-                TestDataBuilder.CreateProductResponse(2, "Product 2", 149.99m)
+                TestDataBuilder.CreateProductResponse("1", "Product 1", 99.99m),
+                TestDataBuilder.CreateProductResponse("2", "Product 2", 149.99m)
             };
 
             var serviceResult = ServiceResult<List<ProductResponse>>.Success(products);
@@ -65,7 +65,7 @@ namespace ECommerceApp.Tests.Controllers
         public async Task GetProductById_ShouldReturnOk_WhenProductExists()
         {
             // Arrange
-            var productId = 1;
+            var productId = "1";
             var product = TestDataBuilder.CreateProductResponse(productId);
             var serviceResult = ServiceResult<ProductResponse>.Success(product);
 
@@ -85,7 +85,7 @@ namespace ECommerceApp.Tests.Controllers
         public async Task GetProductById_ShouldReturnNotFound_WhenProductNotFound()
         {
             // Arrange
-            var productId = 999;
+            var productId = "999";
             var serviceResult = ServiceResult<ProductResponse>.Failure("Product not found", 404);
 
             _mockProductService.Setup(s => s.GetProductByIdAsync(productId))

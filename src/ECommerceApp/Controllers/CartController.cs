@@ -67,7 +67,7 @@ namespace ECommerceApp.Controllers
             return HandleResult(result);
         }
 
-        [HttpGet]
+        [HttpGet("get-cart-items")]
         public async Task<IActionResult> GetCart()
         {
             var userId = GetUserId();

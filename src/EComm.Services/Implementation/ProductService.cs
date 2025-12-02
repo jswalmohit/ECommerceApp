@@ -27,11 +27,11 @@ namespace ECommerceApp.EComm.Services.Implementation
             }
         }
 
-        public async Task<ServiceResult<ProductResponse>> GetProductByIdAsync(int id)
+        public async Task<ServiceResult<ProductResponse>> GetProductByIdAsync(string productId)
         {
             try
             {
-                var product = await _productRepository.GetByIdAsync(id);
+                var product = await _productRepository.GetByIdAsync(productId);
                 if (product == null)
                 {
                     return ServiceResult<ProductResponse>.Failure("Product not found", 404);

@@ -25,7 +25,7 @@ namespace ECommerceApp.Controllers
 
         [HttpGet("{id}")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<IActionResult> GetProductById(string id)
         {
             var result = await _productService.GetProductByIdAsync(id);
             return HandleResult(result);

@@ -5,8 +5,7 @@ namespace ECommerceApp.EComm.Commons.Modals
     public class CartItemRequest
     {
         [Required]
-        [Range(1, int.MaxValue, ErrorMessage = "Product ID must be greater than 0")]
-        public int ProductId { get; set; }
+        public string ProductId { get; set; } = string.Empty;
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]

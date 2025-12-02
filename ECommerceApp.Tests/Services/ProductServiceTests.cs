@@ -26,8 +26,8 @@ namespace ECommerceApp.Tests.Services
             // Arrange
             var products = new List<ProductResponse>
             {
-                TestDataBuilder.CreateProductResponse(1, "Product 1", 99.99m),
-                TestDataBuilder.CreateProductResponse(2, "Product 2", 149.99m)
+                TestDataBuilder.CreateProductResponse("1", "Product 1", 99.99m),
+                TestDataBuilder.CreateProductResponse("2", "Product 2", 149.99m)
             };
 
             _mockProductRepo.Setup(repo => repo.GetAllAsync())
@@ -83,7 +83,7 @@ namespace ECommerceApp.Tests.Services
         public async Task GetProductByIdAsync_ShouldReturnSuccess_WhenProductExists()
         {
             // Arrange
-            var productId = 1;
+            var productId = "1";
             var product = TestDataBuilder.CreateProductResponse(productId);
 
             _mockProductRepo.Setup(repo => repo.GetByIdAsync(productId))
@@ -104,7 +104,7 @@ namespace ECommerceApp.Tests.Services
         public async Task GetProductByIdAsync_ShouldReturnFailure_WhenProductNotFound()
         {
             // Arrange
-            var productId = 999;
+            var productId = "999";
             _mockProductRepo.Setup(repo => repo.GetByIdAsync(productId))
                 .ReturnsAsync((ProductResponse?)null);
 
@@ -122,7 +122,7 @@ namespace ECommerceApp.Tests.Services
         public async Task GetProductByIdAsync_ShouldReturnFailure_WhenExceptionOccurs()
         {
             // Arrange
-            var productId = 1;
+            var productId = "1";
             _mockProductRepo.Setup(repo => repo.GetByIdAsync(productId))
                 .ThrowsAsync(new Exception("Database error"));
 

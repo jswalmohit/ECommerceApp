@@ -5,7 +5,7 @@ namespace ECommerceApp.EComm.Repositories.Interface
     public interface IProductRepo
     {
         Task<List<ProductResponse>> GetAllAsync();
-        Task<ProductResponse?> GetByIdAsync(int id);
+        Task<ProductResponse?> GetByIdAsync(string productId);
     }
 }
 

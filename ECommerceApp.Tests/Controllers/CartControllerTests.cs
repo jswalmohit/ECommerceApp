@@ -50,8 +50,8 @@ namespace ECommerceApp.Tests.Controllers
         public async Task AddItems_ShouldReturnOk_WhenItemAdded()
         {
             // Arrange
-            var request = TestDataBuilder.CreateCartItemRequest(1, 2);
-            var cartItemResponse = TestDataBuilder.CreateCartItemResponse(1, 1, 1, 2);
+            var request = TestDataBuilder.CreateCartItemRequest("1", 2);
+            var cartItemResponse = TestDataBuilder.CreateCartItemResponse(1, 1, "1", 2);
             var serviceResult = ServiceResult<CartItemResponse>.Success(cartItemResponse);
 
             _mockCartService.Setup(s => s.AddItemAsync(1, request))
@@ -70,7 +70,7 @@ namespace ECommerceApp.Tests.Controllers
         public async Task AddItems_ShouldReturnBadRequest_WhenModelInvalid()
         {
             // Arrange
-            var request = new CartItemRequest { ProductId = 0, Quantity = 0 };
+            var request = new CartItemRequest { ProductId = string.Empty, Quantity = 0 };
             _controller.ModelState.AddModelError("ProductId", "Product ID is required");
 
             // Act
@@ -84,7 +84,7 @@ namespace ECommerceApp.Tests.Controllers
         public async Task AddItems_ShouldReturnNotFound_WhenProductNotFound()
         {
             // Arrange
-            var request = TestDataBuilder.CreateCartItemRequest(999, 2);
+            var request = TestDataBuilder.CreateCartItemRequest("999", 2);
             var serviceResult = ServiceResult<CartItemResponse>.Failure("Product not found or inactive", 404);
 
             _mockCartService.Setup(s => s.AddItemAsync(1, request))

@@ -23,10 +23,10 @@ namespace ECommerceApp.Tests.Repositories
         public async Task GetAllAsync_ShouldReturnOnlyActiveProducts()
         {
             // Arrange
-            var activeProduct = TestDataBuilder.CreateProductEntity(1, "Active Product", 99.99m);
+            var activeProduct = TestDataBuilder.CreateProductEntity("1", "Active Product", 99.99m);
             activeProduct.IsActive = true;
 
-            var inactiveProduct = TestDataBuilder.CreateProductEntity(2, "Inactive Product", 149.99m);
+            var inactiveProduct = TestDataBuilder.CreateProductEntity("2", "Inactive Product", 149.99m);
             inactiveProduct.IsActive = false;
 
             _context.Products.AddRange(activeProduct, inactiveProduct);
@@ -46,7 +46,7 @@ namespace ECommerceApp.Tests.Repositories
         public async Task GetAllAsync_ShouldReturnEmptyList_WhenNoActiveProducts()
         {
             // Arrange
-            var inactiveProduct = TestDataBuilder.CreateProductEntity(1, "Inactive Product", 99.99m);
+            var inactiveProduct = TestDataBuilder.CreateProductEntity("1", "Inactive Product", 99.99m);
             inactiveProduct.IsActive = false;
 
             _context.Products.Add(inactiveProduct);
@@ -64,9 +64,9 @@ namespace ECommerceApp.Tests.Repositories
         public async Task GetAllAsync_ShouldReturnProductsOrderedByName()
         {
             // Arrange
-            var product1 = TestDataBuilder.CreateProductEntity(1, "Zebra Product", 99.99m);
-            var product2 = TestDataBuilder.CreateProductEntity(2, "Apple Product", 149.99m);
-            var product3 = TestDataBuilder.CreateProductEntity(3, "Banana Product", 79.99m);
+            var product1 = TestDataBuilder.CreateProductEntity("1", "Zebra Product", 99.99m);
+            var product2 = TestDataBuilder.CreateProductEntity("2", "Apple Product", 149.99m);
+            var product3 = TestDataBuilder.CreateProductEntity("3", "Banana Product", 79.99m);
 
             _context.Products.AddRange(product1, product2, product3);
             await _context.SaveChangesAsync();
@@ -86,16 +86,16 @@ namespace ECommerceApp.Tests.Repositories
         public async Task GetByIdAsync_ShouldReturnProduct_WhenExists()
         {
             // Arrange
-            var product = TestDataBuilder.CreateProductEntity(1, "Test Product", 99.99m);
+            var product = TestDataBuilder.CreateProductEntity("1", "Test Product", 99.99m);
             _context.Products.Add(product);
             await _context.SaveChangesAsync();
 
             // Act
-            var result = await _productRepo.GetByIdAsync(1);
+            var result = await _productRepo.GetByIdAsync("1");
 
             // Assert
             result.Should().NotBeNull();
-            result!.Id.Should().Be(1);
+            result!.ProductId.Should().Be("1");
             result.Name.Should().Be("Test Product");
             result.Price.Should().Be(99.99m);
         }
@@ -104,7 +104,7 @@ namespace ECommerceApp.Tests.Repositories
         public async Task GetByIdAsync_ShouldReturnNull_WhenProductNotFound()
         {
             // Act
-            var result = await _productRepo.GetByIdAsync(999);
+            var result = await _productRepo.GetByIdAsync("999");
 
             // Assert
             result.Should().BeNull();

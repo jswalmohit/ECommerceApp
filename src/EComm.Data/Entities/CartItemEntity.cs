@@ -7,13 +7,16 @@ namespace ECommerceApp.EComm.Data.Entities
     public class CartItemEntity : BaseEntity
     {
 
+        [Key]
+        public int Id { get; set; }
+
         [Required]
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
 
         [Required]
         [ForeignKey(nameof(Product))]
-        public int ProductId { get; set; }
+        public string ProductId { get; set; } = string.Empty;
 
         [Required]
         [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
